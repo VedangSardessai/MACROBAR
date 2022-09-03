@@ -132,16 +132,46 @@ class _AppState extends State<App> {
                             child: Text(
                               productName!,
                               style: GoogleFonts.poppins(
-                                  fontSize: 23, fontWeight: FontWeight.w600),
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 3),
                             ),
                           ),
-                          Text('Nutrition per ' +
-                              nutrimentsPerg.toString() +
-                              'g'),
-                          Text('Proteins = ' + proteins!.toString()),
-                          Text('Carbohydrates = ' + carbohydrates!.toString()),
-                          Text('Fats = ' + fats!.toString()),
-                          Text('Others = ' + others!.toString()),
+                          Column(
+                            children: [
+                              Text(
+                                'Nutrition per ' +
+                                    nutrimentsPerg.toString() +
+                                    'g',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Proteins = ' + proteins!.toString(),
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 18, fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Text(
+                                'Carbohydrates = ' + carbohydrates!.toString(),
+                                style: GoogleFonts.poppins(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                'Fats = ' + fats!.toString(),
+                                style: GoogleFonts.poppins(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                'Others = ' + others!.toString(),
+                                style: GoogleFonts.poppins(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: 40,
                           ),
@@ -210,12 +240,11 @@ class _AppState extends State<App> {
                       isRepeatingAnimation: false,
                       animatedTexts: [
                         TyperAnimatedText(
-                          'Hello Foodie :)\nMy name is Macrobar tap on the camera icon in the top right corner to begin scanning your food!',
-                          textStyle: GoogleFonts.kalam(
-                            fontSize: 32,
-                          ),
-                          speed: Duration(milliseconds: 70)
-                        )
+                            'Hello Foodie :)\nMy name is Macrobar tap on the camera icon in the top right corner to begin scanning your food!',
+                            textStyle: GoogleFonts.kalam(
+                              fontSize: 32,
+                            ),
+                            speed: Duration(milliseconds: 70))
                       ],
                     ),
                   ),
@@ -328,6 +357,7 @@ class SnackBarPage extends StatelessWidget {
           size: 40,
         ),
         onPressed: () {
+          Clipboard.setData(ClipboardData(text: barcode));
           final snackBar = SnackBar(
             content: Text('Barcode : ' + barcode + 'copied to clipboard'),
             action: SnackBarAction(
