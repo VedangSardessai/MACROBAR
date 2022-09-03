@@ -83,13 +83,13 @@ class _AppState extends State<App> {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.shade300,
-                              blurRadius: 15,
+                              blurRadius: 1,
                               offset: Offset(5, 5),
                             ),
                             const BoxShadow(
                               color: Colors.white,
                               blurRadius: 1,
-                              offset: Offset(-5, -5),
+                              offset: Offset(-2, -2),
                             )
                           ]),
                       child: Column(
@@ -129,6 +129,21 @@ class _AppState extends State<App> {
                   ),
                   if (flag == 1 && isLoading == false)
                     Container(
+                      margin: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 1,
+                              offset: Offset(5, 5),
+                            ),
+                            const BoxShadow(
+                              color: Colors.white,
+                              blurRadius: 1,
+                              offset: Offset(-2, -2),
+                            )
+                          ]),
                       padding: EdgeInsets.all(30),
                       child: Column(
                         children: [
@@ -188,13 +203,29 @@ class _AppState extends State<App> {
                   else if (flag == 1 && isLoading == true)
                     CircularProgressIndicator()
                   else if (flag == 0)
-                    Text('Macrobar has never tasted this food item!!')
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 1,
+                              offset: Offset(5, 5),
+                            ),
+                            const BoxShadow(
+                              color: Colors.white,
+                              blurRadius: 1,
+                              offset: Offset(-2, -2),
+                            )
+                          ]),
+                      child: Text('Macrobar has never tasted this food item!!'),
+                    )
                 ],
               )
             else
               Container(
                 height: 350,
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 100,
                   left: 25,
                   right: 25,
@@ -254,7 +285,7 @@ class _AppState extends State<App> {
 
     if (result.status == 1 && result.product!.productName != null) {
       productName = result.product!.productName.toString();
-      print('Result : ' + productName!);
+      // print('Result : ' + productName!);
 
       setState(
         () {
@@ -277,12 +308,12 @@ class _AppState extends State<App> {
             fats = fats! * mul;
             others = others! * mul;
 
-            print('Proteins = ' + proteins.toString());
-            print('Carbohydrates = ' + carbohydrates.toString());
-            print('Fats = ' + fats.toString());
-            print('Others = ' + others.toString());
+            // print('Proteins = ' + proteins.toString());
+            // print('Carbohydrates = ' + carbohydrates.toString());
+            // print('Fats = ' + fats.toString());
+            // print('Others = ' + others.toString());
           }
-          print(nutrimentsPerg!);
+          // print(nutrimentsPerg!);
 
           setState(() {
             isLoading = false;
@@ -291,7 +322,7 @@ class _AppState extends State<App> {
       );
       return result.product;
     } else {
-      print('Macrobar has never tasted this food');
+      // print('Macrobar has never tasted this food');
       setState(
         () {
           flag = 0;
@@ -309,7 +340,7 @@ class _AppState extends State<App> {
           scanResult = result;
           Future<Product?> resgettingProd = getProduct(scanResult!.rawContent);
           gettingProd = resgettingProd;
-          print(scanResult!.rawContent.toString());
+          // print(scanResult!.rawContent.toString());
         },
       );
     } on PlatformException catch (e) {
