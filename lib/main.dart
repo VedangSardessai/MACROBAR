@@ -33,7 +33,11 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     final scanResult = this.scanResult;
-    final gettingProd = this.gettingProd;
+
+    const Color proteinColor = Colors.redAccent,
+        carbohydrateColor = Colors.yellowAccent,
+        fatColor = Colors.blueAccent,
+        othersColor = Colors.purpleAccent;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -82,7 +86,7 @@ class _AppState extends State<App> {
                               blurRadius: 15,
                               offset: Offset(5, 5),
                             ),
-                            BoxShadow(
+                            const BoxShadow(
                               color: Colors.white,
                               blurRadius: 1,
                               offset: Offset(-5, -5),
@@ -132,48 +136,22 @@ class _AppState extends State<App> {
                             child: Text(
                               productName!,
                               style: GoogleFonts.poppins(
-                                  fontSize: 23,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.w600,
-                                  letterSpacing: 3),
+                                  letterSpacing: 4),
                             ),
                           ),
                           Column(
                             children: [
                               Text(
-                                'Nutrition per ' +
-                                    nutrimentsPerg.toString() +
-                                    'g',
-                                style: GoogleFonts.poppins(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Proteins = ' + proteins!.toString(),
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 18, fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Text(
-                                'Carbohydrates = ' + carbohydrates!.toString(),
-                                style: GoogleFonts.poppins(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                'Fats = ' + fats!.toString(),
-                                style: GoogleFonts.poppins(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                'Others = ' + others!.toString(),
+                                'Nutrition per ${nutrimentsPerg}g\nProteins = ${proteins!}\nCarbohydrates = ${carbohydrates!}\nFats = ${fats!}\nOthers = ${others!}',
                                 style: GoogleFonts.poppins(
                                     fontSize: 18, fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 40,
+                          const SizedBox(
+                            height: 20,
                           ),
                           PieChart(
                             dataMap: {
@@ -182,14 +160,21 @@ class _AppState extends State<App> {
                               "Fats": fats!,
                               "Others": others!,
                             },
-                            colorList: [
-                              Colors.redAccent,
-                              Colors.yellowAccent,
-                              Colors.blueAccent,
-                              Colors.purpleAccent
+                            chartRadius: 250,
+                            colorList: const [
+                              proteinColor,
+                              carbohydrateColor,
+                              fatColor,
+                              othersColor
                             ],
+                            legendOptions: LegendOptions(
+                              legendTextStyle: GoogleFonts.poppins(
+                                  fontSize: 11, fontWeight: FontWeight.bold),
+                              legendPosition: LegendPosition.bottom,
+                            ),
+                            initialAngleInDegree: 0,
                             chartLegendSpacing: 8,
-                            chartValuesOptions: ChartValuesOptions(
+                            chartValuesOptions: const ChartValuesOptions(
                               showChartValueBackground: false,
                               showChartValues: true,
                               showChartValuesInPercentage: true,
@@ -222,7 +207,7 @@ class _AppState extends State<App> {
                         blurRadius: 15,
                         offset: Offset(5, 5),
                       ),
-                      BoxShadow(
+                      const BoxShadow(
                         color: Colors.white,
                         blurRadius: 1,
                         offset: Offset(-5, -5),
@@ -244,7 +229,7 @@ class _AppState extends State<App> {
                             textStyle: GoogleFonts.kalam(
                               fontSize: 32,
                             ),
-                            speed: Duration(milliseconds: 70))
+                            speed: const Duration(milliseconds: 70))
                       ],
                     ),
                   ),
