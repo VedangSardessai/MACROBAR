@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 void main() => runApp(const App());
 
@@ -36,6 +38,7 @@ class _AppState extends State<App> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
           backgroundColor: Colors.black,
           centerTitle: true,
@@ -65,55 +68,159 @@ class _AppState extends State<App> {
           children: <Widget>[
             if (scanResult != null)
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  Container(
+                    width: 300,
+                    padding: const EdgeInsets.only(top: 30),
                     child: Container(
                       decoration: BoxDecoration(
-                      ),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 15,
+                              offset: Offset(5, 5),
+                            ),
+                            BoxShadow(
+                              color: Colors.white,
+                              blurRadius: 1,
+                              offset: Offset(-5, -5),
+                            )
+                          ]),
                       child: Column(
                         children: [
-                          Container(
-                            child: Text(
-                              'Barcode Number',
-                              style: GoogleFonts.poppins(
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 30),
+                            child: Column(
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'Barcode Number',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    scanResult.rawContent,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Container(
-                            child: Text(
-                              scanResult.rawContent,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-
                           Padding(
                             padding: const EdgeInsets.all(25.0),
                             child: SnackBarPage(scanResult.rawContent),
                           ),
-                          if (flag == 1)
-                            Column(
-                              children: [
-                                Text('Proteins = ' + proteins!.toString()),
-                                Text('Carbohydrates = ' + carbohydrates!.toString()),
-                                Text('Fats = ' + fats!.toString()),
-                                Text('Others = ' + others!.toString()),
-                                // Text('Sugars = ' + sugar!),
-                              ],
-                            )
-                          else if (flag == 0)
-                            Text('Macrobar has never tasted this food item!!')
                         ],
                       ),
                     ),
                   ),
+                  if (flag == 1 && isLoading == false)
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Text(
+                              productName!,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 23, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Text('Nutrition per ' +
+                              nutrimentsPerg.toString() +
+                              'g'),
+                          Text('Proteins = ' + proteins!.toString()),
+                          Text('Carbohydrates = ' + carbohydrates!.toString()),
+                          Text('Fats = ' + fats!.toString()),
+                          Text('Others = ' + others!.toString()),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          PieChart(
+                            dataMap: {
+                              "Proteins": proteins!,
+                              "Carbohydrates": carbohydrates!,
+                              "Fats": fats!,
+                              "Others": others!,
+                            },
+                            colorList: [
+                              Colors.redAccent,
+                              Colors.yellowAccent,
+                              Colors.blueAccent,
+                              Colors.purpleAccent
+                            ],
+                            chartLegendSpacing: 8,
+                            chartValuesOptions: ChartValuesOptions(
+                              showChartValueBackground: false,
+                              showChartValues: true,
+                              showChartValuesInPercentage: true,
+                              showChartValuesOutside: false,
+                              decimalPlaces: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else if (flag == 1 && isLoading == true)
+                    CircularProgressIndicator()
+                  else if (flag == 0)
+                    Text('Macrobar has never tasted this food item!!')
                 ],
-              ),
+              )
+            else
+              Container(
+                height: 350,
+                margin: EdgeInsets.only(
+                  top: 100,
+                  left: 25,
+                  right: 25,
+                ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 15,
+                        offset: Offset(5, 5),
+                      ),
+                      BoxShadow(
+                        color: Colors.white,
+                        blurRadius: 1,
+                        offset: Offset(-5, -5),
+                      )
+                    ]),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 10,
+                      right: 10,
+                      bottom: 10,
+                    ),
+                    child: AnimatedTextKit(
+                      isRepeatingAnimation: false,
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          'Hello Foodie :)\nMy name is Macrobar tap on the camera icon in the top right corner to begin scanning your food!',
+                          textStyle: GoogleFonts.kalam(
+                            fontSize: 32,
+                          ),
+                          speed: Duration(milliseconds: 70)
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
           ],
         ),
       ),
@@ -121,7 +228,10 @@ class _AppState extends State<App> {
   }
 
   var flag = -1;
-  double? proteins, fats, carbohydrates, others;
+  bool isLoading = true;
+
+  double? proteins, fats, carbohydrates, others, nutrimentsPerg;
+  String? productName;
 
   Future<Product?> getProduct(var barcode) async {
     ProductQueryConfiguration configuration = ProductQueryConfiguration(barcode,
@@ -129,28 +239,40 @@ class _AppState extends State<App> {
     ProductResult result = await OpenFoodAPIClient.getProduct(configuration);
 
     if (result.status == 1 && result.product!.productName != null) {
-      print('Result : ' + result.product!.productName.toString());
+      productName = result.product!.productName.toString();
+      print('Result : ' + productName!);
+
       setState(
         () {
           flag = 1;
-          double nutrimentsPerg = double.parse(
+          nutrimentsPerg = double.parse(
             result.product!.nutrimentDataPer.toString().substring(
                 0, result.product!.nutrimentDataPer.toString().length - 1),
           );
-          print(nutrimentsPerg);
-
           proteins = result.product!.nutriments?.proteins!.roundToDouble();
-          print('Proteins = ' + proteins.toString());
-
           carbohydrates =
               result.product!.nutriments?.carbohydrates!.roundToDouble();
-          print('Carbohydrates = ' + carbohydrates.toString());
-
           fats = result.product!.nutriments?.fat!.roundToDouble();
-          print('Fats = ' + fats.toString());
+          others = nutrimentsPerg! - (proteins! + carbohydrates! + fats!);
 
-          others = nutrimentsPerg - (proteins! + carbohydrates! + fats!);
-          print(others);
+          if (nutrimentsPerg! / 100 != 1) {
+            double mul = nutrimentsPerg! / 100;
+            nutrimentsPerg = nutrimentsPerg! * mul;
+            proteins = proteins! * mul;
+            carbohydrates = carbohydrates! * mul;
+            fats = fats! * mul;
+            others = others! * mul;
+
+            print('Proteins = ' + proteins.toString());
+            print('Carbohydrates = ' + carbohydrates.toString());
+            print('Fats = ' + fats.toString());
+            print('Others = ' + others.toString());
+          }
+          print(nutrimentsPerg!);
+
+          setState(() {
+            isLoading = false;
+          });
         },
       );
       return result.product;
